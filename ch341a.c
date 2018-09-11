@@ -57,6 +57,9 @@ int32_t ch341a_configure(uint16_t vid, uint16_t pid)
         goto close_handle;
     }
 
+    // These functions aren't available in windows
+    #ifndef _WIN32
+
     if(libusb_kernel_driver_active(dev_handle, 0)) {
         ret = libusb_detach_kernel_driver(dev_handle, 0);
         if(ret) {
@@ -64,6 +67,8 @@ int32_t ch341a_configure(uint16_t vid, uint16_t pid)
             goto close_handle;
         }
     }
+
+    #endif
 
     ret = libusb_claim_interface(dev_handle, 0);
 
